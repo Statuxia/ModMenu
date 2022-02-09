@@ -1,6 +1,6 @@
+import urllib.error
 from ctypes import windll
 import io
-from pyperclip import copy
 from tkinter import *
 from urllib.request import urlopen
 from PIL import Image, ImageTk
@@ -33,9 +33,9 @@ class ModMenu:
         self.Tk.borderFrame.pack_propagate(False)
         self.Tk.borderFrame.pack(side=TOP)
 
-        self.Tk.helloText = Label(self.Tk.borderFrame, text="ModMenu",
-                                  bg="gray20", fg="gray60")
-        self.Tk.helloText.pack(side=LEFT)
+        self.Tk.welcomeText = Label(self.Tk.borderFrame, text="ModMenu",
+                                    bg="gray20", fg="gray60", font=("TkDefaultFont", 10, "bold"))
+        self.Tk.welcomeText.pack(side=LEFT)
 
         self.Tk.exit_button = Button(self.Tk.borderFrame, text="  X  ", command=self.exit,
                                      bd=0, bg="gray20", fg="gray60")
@@ -43,82 +43,87 @@ class ModMenu:
         self.Tk.exit_button.bind("<Enter>", self.on_enter_exit)
         self.Tk.exit_button.bind("<Leave>", self.on_leave_exit)
 
-        self.Tk.borderFrame.bind("<Button-1>", self.start_move)
-        self.Tk.borderFrame.bind("<ButtonRelease-1>", self.stop_move)
-        self.Tk.borderFrame.bind("<B1-Motion>", self.moving)
-        self.Tk.borderFrame.bind("<Map>", self.frame_mapped)
+        for child in [self.Tk.borderFrame, self.Tk.welcomeText]:
+            child.bind("<Button-1>", self.start_move)
+            child.bind("<ButtonRelease-1>", self.stop_move)
+            child.bind("<B1-Motion>", self.moving)
+            child.bind("<Map>", self.frame_mapped)
 
-        # Moderators part
         self.Tk.after(10, self.mod_menu_panel())
 
-        # Taskbar icon
         self.Tk.after(10, self.set_appwindow)
-
-        # Start
         self.Tk.mainloop()
 
     def mod_menu_panel(self):
-        mods = load(urlopen("https://api.vimeworld.ru/online/staff"))
-        if self.mods != mods:
-            try:
-                self.Tk.rightFrame.destroy()
-            except:
-                pass
+        try:
+            mods = load(urlopen("https://api.vimeworld.ru/online/staff"))
+            if self.mods != mods:
+                try:
+                    self.Tk.rightFrame.destroy()
+                except:
+                    pass
 
-            if not mods:
-                self.mods = mods
-                self.mods_images = {}
-                self.Tk.rightFrame = Frame(width=290, height=40, bg="gray15")
-                self.Tk.rightFrame.pack_propagate(False)
-                self.Tk.rightFrame.pack()
-                self.Tk.rightFrame.text = Label(self.Tk.rightFrame, text="Никого нет в сети", bg="gray15", fg="#4879EA")
-                self.Tk.rightFrame.text.configure(font=("TkDefaultFont", 14, "bold"))
-                self.Tk.rightFrame.text.pack(side=TOP, pady=3, padx=3)
+                if not mods:
+                    self.mods = mods
+                    self.mods_images = {}
+                    self.Tk.rightFrame = Frame(width=290, height=40, bg="gray15")
+                    self.Tk.rightFrame.pack_propagate(False)
+                    self.Tk.rightFrame.pack()
+                    self.Tk.rightFrame.text = Label(self.Tk.rightFrame, text="Никого нет в сети", bg="gray15",
+                                                    fg="#4879EA")
+                    self.Tk.rightFrame.text.configure(font=("TkDefaultFont", 14, "bold"))
+                    self.Tk.rightFrame.text.pack(side=TOP, pady=3, padx=3)
 
-            else:
-                self.mods = mods
-                self.mods_images = {}
+                else:
+                    self.mods = mods
+                    self.mods_images = {}
 
-                self.Tk.rightFrame = Frame(width=290, bg="gray15")
-                self.Tk.rightFrame.pack_propagate(False)
-                self.Tk.rightFrame.pack()
+                    self.Tk.rightFrame = Frame(width=290, bg="gray15")
+                    self.Tk.rightFrame.pack_propagate(False)
+                    self.Tk.rightFrame.pack()
 
-                for mod in self.mods:
-                    nick = mod.get("username")
-                    if nick is not None:
-                        self.Tk.modbox = Frame(self.Tk.rightFrame, width=290, height=60, bg="gray20")
-                        self.Tk.modbox.pack_propagate(False)
-                        self.Tk.modbox.pack(side=TOP, pady=5, padx=5)
+                    for mod in self.mods:
+                        nick = mod.get("username")
+                        if nick is not None:
+                            self.Tk.modbox = Frame(self.Tk.rightFrame, width=290, height=60, bg="gray20")
+                            self.Tk.modbox.pack_propagate(False)
+                            self.Tk.modbox.pack(side=TOP, pady=5, padx=5)
 
-                        image_byt = urlopen(f"https://skin.vimeworld.ru/head/{nick}/50.png").read()
-                        image_b64 = Image.open(io.BytesIO(image_byt))
-                        self.mods_images[nick] = ImageTk.PhotoImage(image_b64)
-                        self.Tk.modbox.image = Label(self.Tk.modbox, image=self.mods_images.get(nick), bg="gray20")
-                        self.Tk.modbox.image.pack(side=LEFT, pady=3, padx=3)
-                        self.Tk.modbox.text = Label(self.Tk.modbox, text=nick, bg="gray20", fg="#4879EA")
-                        self.Tk.modbox.text.configure(font=("TkDefaultFont", 14, "bold"))
-                        self.Tk.modbox.text.pack(side=LEFT, pady=3, padx=3)
+                            image_byt = urlopen(f"https://skin.vimeworld.ru/head/{nick}/50.png").read()
+                            image_b64 = Image.open(io.BytesIO(image_byt))
+                            self.mods_images[nick] = ImageTk.PhotoImage(image_b64)
+                            self.Tk.modbox.image = Label(self.Tk.modbox, image=self.mods_images.get(nick), bg="gray20")
+                            self.Tk.modbox.image.pack(side=LEFT, pady=3, padx=3)
+                            self.Tk.modbox.text = Label(self.Tk.modbox, text=nick, bg="gray20", fg="#4879EA")
+                            self.Tk.modbox.text.configure(font=("TkDefaultFont", 14, "bold"))
+                            self.Tk.modbox.text.pack(side=LEFT, pady=3, padx=3)
 
-                        self.Tk.modbox.bind("<Button-1>", self.copy_on_click)
-                        self.Tk.modbox.bind("<Enter>", self.on_enter)
-                        self.Tk.modbox.bind("<Leave>", self.on_leave)
-                        for child in self.Tk.modbox.winfo_children():
-                            child.bind("<Button-1>", self.copy_on_click)
-                            child.bind("<Enter>", self.on_enter)
-                            child.bind("<Leave>", self.on_leave)
+                            self.Tk.modbox.bind("<Button-1>", self.copy_on_click)
+                            self.Tk.modbox.bind("<Enter>", self.on_enter)
+                            self.Tk.modbox.bind("<Leave>", self.on_leave)
+                            for child in self.Tk.modbox.winfo_children():
+                                child.bind("<Button-1>", self.copy_on_click)
+                                child.bind("<Enter>", self.on_enter)
+                                child.bind("<Leave>", self.on_leave)
 
-            self.Tk.rightFrame.config(height=round(70 * (len(self.Tk.rightFrame.winfo_children()))))
-
-        self.Tk.after(5000, self.mod_menu_panel)
+                self.Tk.rightFrame.config(height=round(70 * (len(self.Tk.rightFrame.winfo_children()))))
+        except urllib.error.URLError:
+            self.Tk.after(5000, self.mod_menu_panel)
+        else:
+            self.Tk.after(5000, self.mod_menu_panel)
 
     # The part where you get the nickname of the moderator you click on.
     def copy_on_click(self, e):
-        parent = e.widget._nametowidget(e.widget.winfo_parent())
+        if e.widget.winfo_children():
+            parent = e.widget
+        else:
+            parent = e.widget._nametowidget(e.widget.winfo_parent())
+        parent['background'] = 'gray25'
         child = parent.winfo_children()[-1]
-        if child.winfo_children():
-            child = child.winfo_children()[-1]
-        copy(child.cget("text"))
+        self.Tk.clipboard_clear()
+        self.Tk.clipboard_append(child.cget("text"))
         child['foreground'] = "#15AD4B"
+        child['background'] = 'gray25'
 
     # Make Icon in taskbar
     def set_appwindow(self):
@@ -165,29 +170,23 @@ class ModMenu:
         e.widget['foreground'] = 'gray60'
 
     def on_enter(self, e):
-        parent = e.widget._nametowidget(e.widget.winfo_parent())
-        child = parent.winfo_children()[-1]
-        child2 = parent.winfo_children()[0]
-        if child.winfo_children():
-            parent = child
-            child2 = child.winfo_children()[0]
-            child = child.winfo_children()[-1]
+        if e.widget.winfo_children():
+            parent = e.widget
+        else:
+            parent = e.widget._nametowidget(e.widget.winfo_parent())
         parent['background'] = 'gray25'
-        child['background'] = 'gray25'
-        child2['background'] = 'gray25'
+        for child in parent.winfo_children():
+            child['background'] = 'gray25'
 
     def on_leave(self, e):
-        parent = e.widget._nametowidget(e.widget.winfo_parent())
-        child = parent.winfo_children()[-1]
-        child2 = parent.winfo_children()[0]
-        if child.winfo_children():
-            parent = child
-            child2 = child.winfo_children()[0]
-            child = child.winfo_children()[-1]
+        if e.widget.winfo_children():
+            parent = e.widget
+        else:
+            parent = e.widget._nametowidget(e.widget.winfo_parent())
         parent['background'] = 'gray20'
-        child['background'] = 'gray20'
-        child2['background'] = 'gray20'
-        child['foreground'] = '#4879EA'
+        for child in parent.winfo_children():
+            child['background'] = 'gray20'
+            child['foreground'] = '#4879EA'
 
     # Exit part :)
     def exit(self):
