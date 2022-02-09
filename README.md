@@ -1,7 +1,7 @@
 # ModMenu | VimeWorld
-*На скриншоте лишь один модератор, так как делал программу ночью. Позже добавлю еще скринов.*
-![Image alt](https://i.imgur.com/tVIAquT.png)
 
+![Image alt](https://i.imgur.com/CUgIVpJ.png)
+![Image alt](https://i.imgur.com/0EVSA3j.png)
 
 **Как использовать?**
 > При нажатии на область, где никнейм модератора, никнейм автоматически копируется.
