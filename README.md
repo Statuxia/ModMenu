@@ -21,4 +21,4 @@
 
 Если не хочешь качать exe'шник, всегда можешь скомпилировать исходник :)
 
-Скачиваешь Python, в консоли пишешь pip install keyboard и весь функционал программы у тебя в руках. https://github.com/Statuxia/ModMenu
+Скачиваешь Python, в консоли пишешь pip install Pillow, pyperclip и весь функционал программы у тебя в руках. https://github.com/Statuxia/ModMenu
