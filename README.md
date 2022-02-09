@@ -13,9 +13,9 @@
 
 > Скачать через github: https://github.com/Statuxia/ModMenu/raw/main/ModMenu.zip
 
-> Скачать через MEGA: https://mega.nz/file/cQYD1QgT#ZwkgENryxabd1Av-xaSvxvMLTuO3ctgor2_Zo9-r2z0
+> Скачать через MEGA: https://mega.nz/file/RNoRFKQB#EIhgdbG0Y1jwEvokzyliADkxtLO2zClB2oR32w6Rx64
 
-> VT: https://www.virustotal.com/gui/file/89355756aeed1b4368113a2a963e919bd95035bfec2f98cd20c45ad9cefab9b1?nocache=1
+> VT: https://www.virustotal.com/gui/file/c24317865303cd9e0ea0eb7525544eaa95b2b21cdffda4c96827fd86a9986445?nocache=1
 
 *p.s.*
 
